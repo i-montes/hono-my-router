@@ -1,0 +1,66 @@
+{
+  "name": "hono-my-router",
+  "version": "1.0.0",
+  "description": "Dynamic route management module for Hono based on folder structure",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "type-check": "tsc --noEmit",
+    "lint": "echo \"No linter configured\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --watchAll=false",
+    "clean": "rimraf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "hono",
+    "router",
+    "dynamic-routes",
+    "typescript",
+    "file-based-routing"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "path-to-regexp": "^6.2.1"
+  },
+  "peerDependencies": {
+    "hono": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "hono": "^4.0.0",
+    "jest": "^29.5.0",
+    "rimraf": "^5.0.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0",
+    "nodemon": "^3.0.0",
+    "@jest/globals": "^29.5.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/hono-my-router.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/hono-my-router/issues"
+  },
+  "homepage": "https://github.com/yourusername/hono-my-router#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
