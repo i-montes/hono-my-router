@@ -84,7 +84,9 @@ public
 # Storybook build outputs
 .out
 .storybook-out
-.trae/
+.trae
+.trae/*
+.trae/**/*
 
 # Temporary folders
 tmp/

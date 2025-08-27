@@ -24,7 +24,7 @@
     "typescript",
     "file-based-routing"
   ],
-  "author": "Your Name",
+  "author": "Hono My Router Team",
   "license": "MIT",
   "dependencies": {
     "path-to-regexp": "^6.2.1"
@@ -54,12 +54,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/hono-my-router.git"
+    "url": "https://github.com/hono-my-router/hono-my-router.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/hono-my-router/issues"
+    "url": "https://github.com/hono-my-router/hono-my-router/issues"
   },
-  "homepage": "https://github.com/yourusername/hono-my-router#readme",
+  "homepage": "https://github.com/hono-my-router/hono-my-router#readme",
   "engines": {
     "node": ">=18.0.0"
   }

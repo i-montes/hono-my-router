@@ -1,72 +1,72 @@
 # Hono My Router Module
 
-Un módulo avanzado de enrutamiento para Hono que proporciona escaneo automático de archivos de rutas, extracción de parámetros tipada y manejo robusto de errores.
+An advanced routing module for Hono that provides automatic route file scanning, typed parameter extraction, and robust error handling.
 
-## 🚀 Características
+## 🚀 Features
 
-- **Escaneo Automático**: Detecta automáticamente archivos de rutas en tu estructura de carpetas
-- **Tipado TypeScript**: Soporte completo para TypeScript con tipos seguros
-- **Rutas Dinámicas**: Soporte para parámetros únicos, múltiples y segmentos variables
-- **Validación de Parámetros**: Validación automática de parámetros con configuración personalizable
-- **Manejo de Errores**: Sistema robusto de manejo de errores 404 y validación
-- **Rutas Anidadas**: Soporte completo para rutas anidadas complejas
-- **Metadatos de Rutas**: Sistema de metadatos para documentación y configuración
+- **Automatic Scanning**: Automatically detects route files in your folder structure
+- **TypeScript Typing**: Full TypeScript support with type safety
+- **Dynamic Routes**: Support for single, multiple, and variable segment parameters
+- **Parameter Validation**: Automatic parameter validation with customizable configuration
+- **Error Handling**: Robust 404 and validation error handling system
+- **Nested Routes**: Full support for complex nested routes
+- **Route Metadata**: Metadata system for documentation and configuration
 
-## 🔧 Optimización de Rendimiento
+## 🔧 Performance Optimization
 
-### Uso de path-to-regexp para Maximizar Tiempos de Respuesta
+### Using path-to-regexp to Maximize Response Times
 
-Este módulo utiliza la librería `path-to-regexp` para optimizar significativamente el rendimiento del enrutamiento mediante técnicas avanzadas de compilación y matching de patrones:
+This module uses the `path-to-regexp` library to significantly optimize routing performance through advanced pattern compilation and matching techniques:
 
 
-#### ⚡ Matching Optimizado con Expresiones Regulares
+#### ⚡ Optimized Matching with Regular Expressions
 
-- **Compilación Única**: Los patrones de rutas se compilan a expresiones regulares optimizadas durante la inicialización del router
-- **Matching Nativo**: Utiliza el motor de RegExp nativo del JavaScript engine para matching ultra-rápido
-- **Extracción Eficiente**: Los parámetros se extraen en una sola pasada usando grupos de captura nombrados
+- **Single Compilation**: Route patterns are compiled to optimized regular expressions during router initialization
+- **Native Matching**: Uses the native JavaScript RegExp engine for ultra-fast matching
+- **Efficient Extraction**: Parameters are extracted in a single pass using named capture groups
 
-#### 📊 Ventajas de Rendimiento
+#### 📊 Performance Advantages
 
-| Aspecto | String Matching Manual | path-to-regexp |
+| Aspect | Manual String Matching | path-to-regexp |
 |---------|----------------------|----------------|
-| **Compilación** | En cada request | Una sola vez |
-| **Matching** | O(n) iterativo | O(1) RegExp nativo |
-| **Extracción de Parámetros** | Parsing manual | Grupos de captura |
-| **Memoria** | Recálculo constante | Cache optimizado |
-| **CPU** | Alto uso por request | Mínimo uso por request |
+| **Compilation** | On each request | Once only |
+| **Matching** | O(n) iterative | O(1) native RegExp |
+| **Parameter Extraction** | Manual parsing | Capture groups |
+| **Memory** | Constant recalculation | Optimized cache |
+| **CPU** | High usage per request | Minimal usage per request |
 
-## 📦 Instalación
+## 📦 Installation
 
 ```bash
 npm install hono-my-router
-# o
+# or
 pnpm add hono-my-router
-# o
+# or
 yarn add hono-my-router
 ```
 
-## 🛠️ Uso Básico
+## 🛠️ Basic Usage
 
-### Configuración Rápida
+### Quick Setup
 
 ```typescript
 import { createHonoRouterApp } from 'hono-my-router';
 
-// Crear aplicación con router configurado
+// Create application with configured router
 const { app, router, result } = await createHonoRouterApp({
   routesDirectory: './src/routes',
   enableLogging: true,
   enableParameterValidation: true
 });
 
-// Iniciar servidor
+// Start server
 export default {
   port: 3000,
   fetch: app.fetch
 };
 ```
 
-### Configuración Manual
+### Manual Configuration
 
 ```typescript
 import { Router } from 'hono-my-router';
@@ -83,45 +83,45 @@ const router = new Router({
   }
 });
 
-// Inicializar router
+// Initialize router
 const result = await router.initialize();
 
-// Montar rutas
+// Mount routes
 app.route('/', router.getApp());
 
-console.log(`Router inicializado con ${result.totalRoutes} rutas`);
+console.log(`Router initialized with ${result.totalRoutes} routes`);
 ```
 
-## 📁 Estructura de Archivos de Rutas
+## 📁 Route File Structure
 
-### Tipos de Rutas Soportadas
+### Supported Route Types
 
-#### 1. Rutas Simples
+#### 1. Simple Routes
 ```
 src/routes/api/users/index.ts → /api/users
 src/routes/api/health.ts → /api/health
 ```
 
-#### 2. Parámetros Únicos
+#### 2. Single Parameters
 ```
 src/routes/api/users/[id].ts → /api/users/:id
 src/routes/api/posts/[slug].ts → /api/posts/:slug
 ```
 
-#### 3. Rutas Anidadas
+#### 3. Nested Routes
 ```
 src/routes/api/users/[id]/profile.ts → /api/users/:id/profile
 src/routes/api/users/[id]/posts/[postId].ts → /api/users/:id/posts/:postId
 ```
 
-#### 4. Segmentos Variables
+#### 4. Variable Segments
 ```
 src/routes/api/products/[...segments].ts → /api/products/*
 ```
 
-## 📝 Definición de Handlers
+## 📝 Handler Definition
 
-### Handler Básico
+### Basic Handler
 
 ```typescript
 // src/routes/api/users/index.ts
@@ -146,14 +146,14 @@ export async function post(c: ExtendedContext) {
 }
 ```
 
-### Handler con Parámetros
+### Handler with Parameters
 
 ```typescript
 // src/routes/api/users/[id].ts
 import { ExtendedContext } from 'hono-my-router/types';
 
 export async function get(c: ExtendedContext) {
-  const { id } = c.params; // Tipado automático
+  const { id } = c.params; // Automatic typing
   const user = await getUserById(parseInt(id));
   
   if (!user) {
@@ -167,7 +167,7 @@ export async function get(c: ExtendedContext) {
   });
 }
 
-// Configuración de validación
+// Validation configuration
 export const paramValidation = {
   id: {
     type: 'number',
@@ -177,7 +177,7 @@ export const paramValidation = {
 };
 ```
 
-### Handler con Segmentos Variables
+### Handler with Variable Segments
 
 ```typescript
 // src/routes/api/products/[...segments].ts
@@ -206,23 +206,23 @@ export const paramValidation = {
 };
 ```
 
-## ⚙️ Configuración
+## ⚙️ Configuration
 
 ### RouterConfig
 
 ```typescript
 interface RouterConfig {
-  routesDirectory: string;              // Directorio de rutas
-  enableLogging?: boolean;              // Habilitar logging
-  enableParameterValidation?: boolean;  // Validación de parámetros
+  routesDirectory: string;              // Routes directory
+  enableLogging?: boolean;              // Enable logging
+  enableParameterValidation?: boolean;  // Parameter validation
   errorHandling?: {
-    enable404Handler?: boolean;         // Handler 404 automático
-    enableValidationErrors?: boolean;   // Errores de validación
+    enable404Handler?: boolean;         // Automatic 404 handler
+    enableValidationErrors?: boolean;   // Validation errors
   };
 }
 ```
 
-### Validación de Parámetros
+### Parameter Validation
 
 ```typescript
 export const paramValidation = {
@@ -249,11 +249,11 @@ export const paramValidation = {
 };
 ```
 
-### Metadatos de Rutas
+### Route Metadata
 
 ```typescript
 export const routeMetadata = {
-  description: 'Gestión de usuarios',
+  description: 'User management',
   tags: ['users', 'crud'],
   version: '1.0.0',
   parameters: {
@@ -266,9 +266,9 @@ export const routeMetadata = {
 };
 ```
 
-## 🔧 API Avanzada
+## 🚀 Advanced API
 
-### Funciones de Utilidad
+### Utility Functions
 
 ```typescript
 import {
@@ -280,21 +280,48 @@ import {
   extractRouteParameters
 } from 'hono-my-router';
 
-// Crear aplicación completa
+// Create complete application
 const { app, router } = await createHonoRouterApp(config);
 
-// Configurar rutas en app existente
+// Configure routes in existing app
 const existingApp = new Hono();
 const { router } = await setupRoutes(existingApp, config);
 
-// Validar configuración
+// Validate configuration
 const { isValid, errors } = validateRouterConfig(config);
 
-// Crear configuración por defecto
+// Create default configuration
 const defaultConfig = createDefaultConfig({ enableLogging: true });
 ```
 
-### Estadísticas del Router
+### Router Utilities
+
+```typescript
+import { Router } from 'hono-my-router';
+
+const router = new Router({
+  routesDirectory: './src/routes',
+  enableLogging: true,
+  enableParameterValidation: true
+});
+
+// Get router statistics
+const stats = router.getStats();
+console.log(`Registered routes: ${stats.totalRoutes}`);
+console.log(`Active handlers: ${stats.totalHandlers}`);
+
+// Get registered route information
+const routes = router.getRegisteredRoutes();
+routes.forEach(route => {
+  console.log(`${route.method} ${route.path} -> ${route.filePath}`);
+});
+
+// Check if a route exists
+const exists = router.hasRoute('GET', '/api/users/:id');
+console.log(`Route exists: ${exists}`);
+```
+
+### Router Statistics
 
 ```typescript
 const stats = router.getStats();
@@ -305,7 +332,7 @@ console.log({
 });
 ```
 
-### Información de Rutas Registradas
+### Registered Route Information
 
 ```typescript
 const routes = router.getRegisteredRoutes();
@@ -319,12 +346,12 @@ routes.forEach(route => {
 });
 ```
 
-## 🚨 Manejo de Errores
+## 🚨 Error Handling
 
-### Errores 404 Automáticos
+### Automatic 404 Errors
 
 ```typescript
-// Configuración automática de 404
+// Automatic 404 configuration
 const router = new Router({
   routesDirectory: './src/routes',
   errorHandling: {
@@ -333,11 +360,31 @@ const router = new Router({
 });
 ```
 
-### Errores de Validación
+#### 404 Errors
+```typescript
+// Automatic configuration
+const router = new Router({
+  routesDirectory: './src/routes',
+  errorHandling: {
+    enable404Handler: true
+  }
+});
+
+// Custom 404 handler
+app.notFound((c) => {
+  return c.json({
+    error: 'Endpoint not found',
+    path: c.req.path,
+    method: c.req.method
+  }, 404);
+});
+```
+
+### Validation Errors
 
 ```typescript
-// Los errores de validación se manejan automáticamente
-// Respuesta automática para parámetros inválidos:
+// Validation errors are handled automatically
+// Automatic response for invalid parameters:
 {
   "success": false,
   "error": "Validation failed",
@@ -347,7 +394,33 @@ const router = new Router({
 }
 ```
 
-### Handler de Errores Personalizado
+#### Validation Errors
+```typescript
+// src/routes/api/users/[id].ts
+export const paramValidation = {
+  id: {
+    type: 'number',
+    required: true,
+    min: 1,
+    errorMessage: 'ID must be a positive number'
+  }
+};
+
+export async function get(c: ExtendedContext) {
+  // If validation fails, it automatically returns:
+  // {
+  //   error: 'Validation failed',
+  //   details: 'ID must be a positive number',
+  //   parameter: 'id',
+  //   value: 'invalid-value'
+  // }
+  
+  const { id } = c.params; // Here id is already validated
+  // ... rest of handler
+}
+```
+
+### Custom Error Handler
 
 ```typescript
 import { ErrorHandler } from 'hono-my-router';
@@ -357,10 +430,10 @@ const errorHandler = new ErrorHandler({
   enableValidationErrors: true
 });
 
-// Personalizar respuesta 404
+// Customize 404 response
 errorHandler.handle404 = async (c) => {
   return c.json({
-    error: 'Ruta no encontrada',
+    error: 'Route not found',
     path: c.req.path,
     method: c.req.method,
     timestamp: new Date().toISOString()
@@ -368,9 +441,42 @@ errorHandler.handle404 = async (c) => {
 };
 ```
 
-## 📊 Ejemplos Completos
+#### Custom Error Handling
+```typescript
+// src/routes/api/users/[id].ts
+import { ErrorHandler } from 'hono-my-router';
 
-### Ejemplo 1: API REST Básica
+export async function get(c: ExtendedContext) {
+  try {
+    const { id } = c.params;
+    const user = await getUserById(parseInt(id));
+    
+    if (!user) {
+      throw new ErrorHandler('User not found', 404, {
+        userId: id,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    return c.json({ success: true, data: user });
+  } catch (error) {
+    if (error instanceof ErrorHandler) {
+      return c.json({
+        error: error.message,
+        statusCode: error.statusCode,
+        metadata: error.metadata
+      }, error.statusCode);
+    }
+    
+    // Generic error
+    return c.json({ error: 'Internal server error' }, 500);
+  }
+}
+```
+
+## 📊 Complete Examples
+
+### Example 1: Basic REST API
 
 ```typescript
 // src/app.ts
@@ -397,7 +503,7 @@ export async function post(c) {
 }
 ```
 
-### Ejemplo 2: API con Autenticación
+### Example 2: API with Authentication
 
 ```typescript
 // src/routes/api/protected/[...path].ts
@@ -412,13 +518,103 @@ export async function get(c: ExtendedContext) {
   
   const { path } = c.params;
   return c.json({
-    message: `Acceso autorizado a: ${path.join('/')}`,
+    message: `Authorized access to: ${path.join('/')}`,
     user: await getUserFromToken(token)
   });
 }
 ```
 
+### Example 3: Complete Authentication Route
+
+```typescript
+// src/routes/api/auth/[...path].ts
+import { ExtendedContext } from 'hono-my-router/types';
+
+export async function get(c: ExtendedContext) {
+  const token = c.req.header('Authorization')?.replace('Bearer ', '');
+  
+  if (!token || !isValidToken(token)) {
+    return c.json({ error: 'Unauthorized' }, 401);
+  }
+  
+  const { path } = c.params;
+  return c.json({
+    message: `Authorized access to: ${path.join('/')}`,
+    user: await getUserFromToken(token)
+  });
+}
+
+export const paramValidation = {
+  path: {
+    type: 'array',
+    required: true,
+    minLength: 1
+  }
+};
+
+export const routeMetadata = {
+  description: 'Protected routes with authentication',
+  tags: ['auth', 'protected'],
+  requiresAuth: true
+};
+```
+
 ## 🧪 Testing
+
+### Jest Configuration
+
+```javascript
+// jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  roots: ['<rootDir>/src', '<rootDir>/tests'],
+  testMatch: ['**/__tests__/**/*.ts', '**/?(*.)+(spec|test).ts'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.d.ts',
+  ],
+};
+```
+
+### Test Example
+
+```typescript
+// tests/router.test.ts
+import { Router } from '../src';
+import { Hono } from 'hono';
+
+describe('Router', () => {
+  let app: Hono;
+  let router: Router;
+
+  beforeEach(() => {
+    app = new Hono();
+    router = new Router({
+      routesDirectory: './tests/fixtures/routes'
+    });
+  });
+
+  test('should register routes correctly', async () => {
+    await router.initialize(app);
+    const routes = router.getRegisteredRoutes();
+    
+    expect(routes).toHaveLength(3);
+    expect(routes[0].path).toBe('/api/users');
+    expect(routes[0].method).toBe('GET');
+  });
+
+  test('should handle parameters validation', async () => {
+    await router.initialize(app);
+    
+    const res = await app.request('/api/users/invalid-id');
+    expect(res.status).toBe(400);
+    
+    const json = await res.json();
+    expect(json.error).toBe('Validation failed');
+  });
+});
+```
 
 ```bash
 # Ejecutar tests
@@ -431,34 +627,56 @@ npm run test:coverage
 npm run test:watch
 ```
 
-## 📋 Scripts Disponibles
+## 📜 Available Scripts
 
 ```bash
-npm run build      # Compilar TypeScript
-npm run dev        # Modo desarrollo con watch
-npm run test       # Ejecutar tests
-npm run lint       # Linter ESLint
-npm run clean      # Limpiar archivos compilados
+# Development
+npm run dev          # Start development server
+npm run build        # Build the project
+npm run test         # Run tests
+npm run test:watch   # Tests in watch mode
+npm run test:coverage # Tests with coverage
+
+# Code quality
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix linting errors
+npm run type-check   # Check TypeScript types
+
+# Publishing
+npm run prepublishOnly # Prepare for publishing
+npm publish          # Publish to npm
 ```
 
-## 🤝 Contribuir
+## 🤝 Contributing
 
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/amazing-feature`)
-3. Commit tus cambios (`git commit -m 'Add amazing feature'`)
-4. Push a la rama (`git push origin feature/amazing-feature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+### Contribution Guidelines
 
-MIT License - ver el archivo [LICENSE](LICENSE) para más detalles.
+- Follow existing code conventions
+- Add tests for new functionality
+- Update documentation when necessary
+- Ensure all tests pass
 
-## 🔗 Enlaces
+## 📄 License
 
-- [Documentación de Hono](https://hono.dev/)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- [Hono Documentation](https://hono.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Repositorio](https://github.com/tu-usuario/hono-my-router)
+- [Node.js](https://nodejs.org/)
+- [NPM Package](https://www.npmjs.com/package/hono-my-router)
 
 ---
 
-**Hecho con ❤️ para la comunidad de Hono**
+**Like this project?** ⭐ Give it a star on GitHub!
+
+**Found a bug?** 🐛 [Report an issue](https://github.com/tu-usuario/hono-my-router/issues)
+
+**Want to contribute?** 🚀 [Read the contribution guide](CONTRIBUTING.md)
